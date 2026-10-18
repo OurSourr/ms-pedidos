@@ -10,7 +10,6 @@ import java.util.List;
 @Entity
 @Table(name = "carrito")
 @Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
 @Builder
 public class CarritoEntity {
 
@@ -31,6 +30,19 @@ public class CarritoEntity {
     @OneToMany(mappedBy = "carrito", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<DetalleCarritoEntity> detalles = new ArrayList<>();
+
+// 1. Constructor vacío manual (reemplaza solo a @NoArgsConstructor)
+    public CarritoEntity() {
+    }
+
+    // 2. Constructor completo manual (reemplaza solo a @AllArgsConstructor)
+    public CarritoEntity(Integer id, Integer idCuentaExterno, LocalDateTime createdAt, LocalDateTime updatedAt, List<DetalleCarritoEntity> detalles) {
+        this.id = id;
+        this.idCuentaExterno = idCuentaExterno;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.detalles = detalles;
+    }
 
     @PrePersist
     protected void onCreate() {

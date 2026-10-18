@@ -1,7 +1,10 @@
 package cl.duoc.ms.pedidos.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -9,9 +12,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "pedido")
-@Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
-@Builder
+@Getter 
+@Setter
 public class PedidoEntity {
 
     @Id
@@ -65,11 +67,41 @@ public class PedidoEntity {
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
-    @Builder.Default
     private List<DetallePedidoEntity> detalles = new ArrayList<>();
 
     @OneToOne(mappedBy = "pedido", cascade = CascadeType.ALL)
     private PagoSimuladoEntity pagoSimulado;
+
+    // 1. Constructor vacío manual (reemplaza a @NoArgsConstructor, obligatorio para JPA)
+    public PedidoEntity() {
+    }
+
+    // 2. Constructor completo explícito con @Builder (reemplaza a @AllArgsConstructor y @Builder.Default)
+    @Builder
+    public PedidoEntity(Integer id, Integer idCuentaExterno, String estado, String nombreDestinatario,
+                        String calle, String numero, String deptoCasa, String comuna, String region,
+                        String telefono, String referencia, BigDecimal subtotal, BigDecimal costoDespacho,
+                        BigDecimal total, LocalDateTime createdAt, LocalDateTime updatedAt,
+                        List<DetallePedidoEntity> detalles, PagoSimuladoEntity pagoSimulado) {
+        this.id = id;
+        this.idCuentaExterno = idCuentaExterno;
+        this.estado = estado;
+        this.nombreDestinatario = nombreDestinatario;
+        this.calle = calle;
+        this.numero = numero;
+        this.deptoCasa = deptoCasa;
+        this.comuna = comuna;
+        this.region = region;
+        this.telefono = telefono;
+        this.referencia = referencia;
+        this.subtotal = subtotal;
+        this.costoDespacho = costoDespacho;
+        this.total = total;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.detalles = detalles != null ? detalles : new ArrayList<>();
+        this.pagoSimulado = pagoSimulado;
+    }
 
     @PrePersist
     protected void onCreate() {

@@ -6,7 +6,7 @@ import lombok.*;
 @Entity
 @Table(name = "detalle_carrito")
 @Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
+@NoArgsConstructor 
 @Builder
 public class DetalleCarritoEntity {
 
@@ -24,4 +24,13 @@ public class DetalleCarritoEntity {
 
     @Column(name = "cantidad", nullable = false)
     private Integer cantidad;
+
+// Constructor completo explícito (reemplaza a @AllArgsConstructor)
+    public DetalleCarritoEntity(Integer id, CarritoEntity carrito, Integer idProductoExterno, Integer cantidad) {
+        this.id = id;
+        this.carrito = carrito;
+        this.idProductoExterno = idProductoExterno;
+        this.cantidad = cantidad;
+    }
 }
+
