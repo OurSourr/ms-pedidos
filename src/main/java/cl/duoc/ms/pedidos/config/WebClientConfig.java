@@ -9,6 +9,9 @@ public class WebClientConfig {
 
     @Bean
     public WebClient webClient() {
-        return WebClient.builder().build();
+        // Se define aquí la URL base de ms-catalogo 
+        return WebClient.builder()
+                .baseUrl("http://localhost:8081") 
+                .build();
     }
 }

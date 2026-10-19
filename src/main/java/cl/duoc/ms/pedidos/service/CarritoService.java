@@ -42,11 +42,11 @@ public class CarritoService {
                 .orElseGet(() -> carritoRepository.save(CarritoEntity.builder().idCuentaExterno(idCuenta).build()));
 
         // Llamada directa a ms-catalogo usando WebClient
-        ProductoCatalogoDTO prod = webClient.get()
-                .uri("/api/v1/productos/{id}", request.getIdProducto())
-                .retrieve()
-                .bodyToMono(ProductoCatalogoDTO.class)
-                .block();
+       ProductoCatalogoDTO prod = webClient.get()
+        .uri("http://localhost:8081/api/v1/productos/{id}", request.getIdProducto())
+        .retrieve()
+        .bodyToMono(ProductoCatalogoDTO.class)
+        .block();
       
         if (prod == null || !prod.getActivo()) {
             throw new RuntimeException("El producto no existe o está inactivo");
@@ -86,11 +86,11 @@ public class CarritoService {
 
         for (DetalleCarritoEntity detalle : carrito.getDetalles()) {
             // Consultar precio actualizado en ms-catalogo (no se guarda precio en carrito)
-            ProductoCatalogoDTO prod = webClient.get()
-                    .uri("/api/v1/productos/{id}", detalle.getIdProductoExterno())
-                    .retrieve()
-                    .bodyToMono(ProductoCatalogoDTO.class)
-                    .block();
+           ProductoCatalogoDTO prod = webClient.get()
+        .uri("http://localhost:8081/api/v1/productos/{id}", detalle.getIdProductoExterno())
+        .retrieve()
+        .bodyToMono(ProductoCatalogoDTO.class)
+        .block();
             BigDecimal subtotalLinea = prod.getPrecio().multiply(BigDecimal.valueOf(detalle.getCantidad()));
             subtotalGeneral = subtotalGeneral.add(subtotalLinea);
 
